@@ -24,12 +24,16 @@ app.get("/api/hello", function (req, res) {
 });
 
 app.get("/api/:date?", (req, res) => {
-  const date = Number(req.params.date)
-    ? new Date(Number(req.params.date))
-    : new Date(req.params.date);
+  const date = req.params.date;
 
-  if (String(date) !== "Invalid Date") {
-    res.json({ unix: date.getTime(), utc: date.toGMTString() });
+  const time = Number(date)
+    ? new Date(Number(date))
+    : date === undefined 
+    ? new Date()
+    : new Date(date);
+
+  if (String(time) !== "Invalid Date") {
+    res.json({ unix: time.getTime(), utc: time.toGMTString() });
   } else {
     res.json({ error: "Invalid Date" });
   }
